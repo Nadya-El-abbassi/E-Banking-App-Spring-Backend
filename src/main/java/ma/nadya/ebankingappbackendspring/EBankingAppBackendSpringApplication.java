@@ -1,9 +1,11 @@
 package ma.nadya.ebankingappbackendspring;
 
+import ma.nadya.ebankingappbackendspring.entities.AccountOperation;
 import ma.nadya.ebankingappbackendspring.entities.CurrentAccount;
 import ma.nadya.ebankingappbackendspring.entities.Customer;
 import ma.nadya.ebankingappbackendspring.entities.SavingAccount;
 import ma.nadya.ebankingappbackendspring.enums.AccountStatus;
+import ma.nadya.ebankingappbackendspring.enums.OperationType;
 import ma.nadya.ebankingappbackendspring.repositories.AccountOperationRepository;
 import ma.nadya.ebankingappbackendspring.repositories.BankAccountRepository;
 import ma.nadya.ebankingappbackendspring.repositories.CustomerRepository;
@@ -53,6 +55,18 @@ public class EBankingAppBackendSpringApplication {
                 savingAccount.setCustomer(cust);
                 savingAccount.setRate(5.5);
                 bankAccountRepository.save(savingAccount);
+            });
+
+            bankAccountRepository.findAll().forEach(acc-> {
+                for (int i=0;i<5;i++){
+                    AccountOperation accountOperation = new AccountOperation();
+                    accountOperation.setOperationDate(new Date());
+                    accountOperation.setAmount(Math.random()*12000);
+                    accountOperation.setOperationType(Math.random()>0.5? OperationType.DEBIT:OperationType.CREDIT);
+                    accountOperation.setBankAccount(acc);
+                    accountOperationRepository.save(accountOperation);
+                }
+
             });
         };
     }
