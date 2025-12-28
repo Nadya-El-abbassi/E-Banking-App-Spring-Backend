@@ -1,9 +1,6 @@
 package ma.nadya.ebankingappbackendspring;
 
-import ma.nadya.ebankingappbackendspring.entities.AccountOperation;
-import ma.nadya.ebankingappbackendspring.entities.CurrentAccount;
-import ma.nadya.ebankingappbackendspring.entities.Customer;
-import ma.nadya.ebankingappbackendspring.entities.SavingAccount;
+import ma.nadya.ebankingappbackendspring.entities.*;
 import ma.nadya.ebankingappbackendspring.enums.AccountStatus;
 import ma.nadya.ebankingappbackendspring.enums.OperationType;
 import ma.nadya.ebankingappbackendspring.repositories.AccountOperationRepository;
@@ -27,6 +24,35 @@ public class EBankingAppBackendSpringApplication {
         SpringApplication.run(EBankingAppBackendSpringApplication.class, args);
     }
     @Bean
+    CommandLineRunner commandLineRunner(BankAccountRepository bankAccountRepository){
+        return args -> {
+            BankAccount bankAccount = bankAccountRepository.findById("1d783f21-d251-4180-a366-ffdbe90d2145").orElse(null);
+            System.out.println("---------");
+            System.out.println(bankAccount.getId());
+            System.out.println(bankAccount.getBalance());
+            System.out.println(bankAccount.getCreationDate());
+            System.out.println(bankAccount.getCustomer().getName());
+            System.out.println(bankAccount.getClass().getSimpleName());
+            if(bankAccount instanceof CurrentAccount) {
+                System.out.println("OverDraft--->"+((CurrentAccount) bankAccount).getOverdraft());
+            }else if(bankAccount instanceof SavingAccount) {
+                System.out.println("Rate--->"+((SavingAccount) bankAccount).getRate());
+            }
+            bankAccount.getAccountOperations().forEach(op->{
+                System.out.println("-------------");
+                System.out.println(op.getOperationType());
+                System.out.println(op.getAmount());
+                System.out.println(op.getOperationDate());
+            });
+
+
+
+
+
+        };
+    }
+
+    //@Bean
     CommandLineRunner start(CustomerRepository customerRepository,
                             BankAccountRepository bankAccountRepository,
                             AccountOperationRepository accountOperationRepository) {
@@ -66,6 +92,8 @@ public class EBankingAppBackendSpringApplication {
                     accountOperation.setBankAccount(acc);
                     accountOperationRepository.save(accountOperation);
                 }
+
+
 
             });
         };
