@@ -6,6 +6,7 @@ import ma.nadya.ebankingappbackendspring.enums.OperationType;
 import ma.nadya.ebankingappbackendspring.repositories.AccountOperationRepository;
 import ma.nadya.ebankingappbackendspring.repositories.BankAccountRepository;
 import ma.nadya.ebankingappbackendspring.repositories.CustomerRepository;
+import ma.nadya.ebankingappbackendspring.services.BankAccountService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,26 +25,9 @@ public class EBankingAppBackendSpringApplication {
         SpringApplication.run(EBankingAppBackendSpringApplication.class, args);
     }
     @Bean
-    CommandLineRunner commandLineRunner(BankAccountRepository bankAccountRepository){
+    CommandLineRunner commandLineRunner(BankAccountService  bankAccountService) {
         return args -> {
-            BankAccount bankAccount = bankAccountRepository.findById("1d783f21-d251-4180-a366-ffdbe90d2145").orElse(null);
-            System.out.println("---------");
-            System.out.println(bankAccount.getId());
-            System.out.println(bankAccount.getBalance());
-            System.out.println(bankAccount.getCreationDate());
-            System.out.println(bankAccount.getCustomer().getName());
-            System.out.println(bankAccount.getClass().getSimpleName());
-            if(bankAccount instanceof CurrentAccount) {
-                System.out.println("OverDraft--->"+((CurrentAccount) bankAccount).getOverdraft());
-            }else if(bankAccount instanceof SavingAccount) {
-                System.out.println("Rate--->"+((SavingAccount) bankAccount).getRate());
-            }
-            bankAccount.getAccountOperations().forEach(op->{
-                System.out.println("-------------");
-                System.out.println(op.getOperationType());
-                System.out.println(op.getAmount());
-                System.out.println(op.getOperationDate());
-            });
+            bankAccountService.consulter();
 
 
 
