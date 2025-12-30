@@ -1,29 +1,27 @@
 package ma.nadya.ebankingappbackendspring.entities;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ma.nadya.ebankingappbackendspring.enums.AccountStatus;
 
+import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
-
-@Data
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE) //Types: SINGLE_TABLE, JOINED, TABLE_PER_CLASS
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "TYPE",length = 4)
-public class BankAccount {
+@Data @NoArgsConstructor @AllArgsConstructor
+public abstract class BankAccount {
     @Id
     private String id;
     private double balance;
-    private Date creationDate;
+    private Date createdAt;
     @Enumerated(EnumType.STRING)
     private AccountStatus status;
     @ManyToOne
     private Customer customer;
-    @OneToMany(mappedBy = "bankAccount", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "bankAccount",fetch = FetchType.LAZY)
     private List<AccountOperation> accountOperations;
 }

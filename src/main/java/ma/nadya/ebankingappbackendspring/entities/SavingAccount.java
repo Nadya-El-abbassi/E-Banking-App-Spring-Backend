@@ -6,11 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
 @DiscriminatorValue("SA")
-public class SavingAccount extends BankAccount{
-    private double rate;
+@Data @NoArgsConstructor @AllArgsConstructor
+public class SavingAccount extends BankAccount {
+    private double interestRate;
 }
+
