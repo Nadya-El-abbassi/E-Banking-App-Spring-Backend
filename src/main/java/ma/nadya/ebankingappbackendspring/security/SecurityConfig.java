@@ -1,4 +1,4 @@
-package ma.mundia.banque_digital_backend.security;
+package ma.nadya.ebankingappbackendspring.security;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,10 +80,9 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        return new ProviderManager(daoAuthenticationProvider);
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService); // injecte directement le UserDetailsService
+        provider.setPasswordEncoder(passwordEncoder()); // encodeur de mot de passe
+        return new ProviderManager(provider);
     }
 
     @Bean

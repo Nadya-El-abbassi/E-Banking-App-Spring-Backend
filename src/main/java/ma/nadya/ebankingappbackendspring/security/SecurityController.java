@@ -1,4 +1,4 @@
-package ma.mundia.banque_digital_backend.security;
+package ma.nadya.ebankingappbackendspring.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
